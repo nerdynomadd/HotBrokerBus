@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageId>HotMessageBus</PackageId>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.1.0" />
+    <PackageReference Include="Autofac.Extras.Quartz" Version="6.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Quartz" Version="3.2.3" />
+    <PackageReference Include="Quartz.Lambda" Version="1.0.5" />
+    <PackageReference Include="STAN.Client" Version="0.3.0" />
+  </ItemGroup>
+
+</Project>
