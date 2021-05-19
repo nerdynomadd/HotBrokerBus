@@ -1,6 +1,6 @@
 ﻿using STAN.Client;
 
-namespace Bus.Abstractions.Stan
+namespace HotBrokerBus.Abstractions.Stan
 {
     public interface IStanBusPersistentConnection : IBusPersistentConnection<IStanConnection>
     {

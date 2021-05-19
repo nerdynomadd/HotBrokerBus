@@ -1,14 +1,15 @@
 ﻿using System;
 using Autofac;
-using Bus.Abstractions.Events;
-using Bus.Middleware;
+using HotBrokerBus.Abstractions.Events;
+using HotBrokerBus.Middleware;
 using STAN.Client;
 
-namespace Bus.Stan.Events
+namespace HotBrokerBus.Stan.Events
 {
     public class StanBusEventExecutionContext : IEventExecutionContext
     {
         public StanBusEventExecutionContext(BusMiddlewareComponent middlewareComponent,
+            string eventTopic,
             byte[] eventData,
             Type eventType,
             IEvent @event,
@@ -18,6 +19,8 @@ namespace Bus.Stan.Events
             ILifetimeScope lifetimeScope)
         {
             MiddlewareComponent = middlewareComponent;
+
+            EventTopic = eventTopic;
             
             EventData = eventData;
 
@@ -36,6 +39,8 @@ namespace Bus.Stan.Events
 
         public BusMiddlewareComponent MiddlewareComponent { get; }
 
+        public string EventTopic { get; }
+        
         public byte[] EventData { get; }
         
         public Type EventType { get; }

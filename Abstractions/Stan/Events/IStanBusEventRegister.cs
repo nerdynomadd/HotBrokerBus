@@ -1,7 +1,7 @@
-﻿using Bus.Abstractions.Events;
+﻿using HotBrokerBus.Abstractions.Events;
 using STAN.Client;
 
-namespace Bus.Abstractions.Stan.Events
+namespace HotBrokerBus.Abstractions.Stan.Events
 {
     public interface IStanBusEventRegister
     {

@@ -1,13 +1,13 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using Bus.Abstractions.Commands;
-using Bus.Abstractions.Stan.Commands;
-using Bus.Middleware;
+using HotBrokerBus.Abstractions.Commands;
+using HotBrokerBus.Abstractions.Stan.Commands;
+using HotBrokerBus.Middleware;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Bus.Stan.Commands
+namespace HotBrokerBus.Stan.Commands
 {
     public class StanBusCommandParserMiddleware : IStanBusCommandParserMiddleware
     {

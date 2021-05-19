@@ -1,7 +1,7 @@
 ﻿using System;
-using Bus.Abstractions.Commands;
+using HotBrokerBus.Abstractions.Commands;
 
-namespace Bus.Commands
+namespace HotBrokerBus.Commands
 {
     public class Command<TResult> : ICommand<TResult>
         where TResult : ICommandResult

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Bus.Abstractions.Commands
+namespace HotBrokerBus.Abstractions.Commands
 {
     public interface ICommandHandler
     {

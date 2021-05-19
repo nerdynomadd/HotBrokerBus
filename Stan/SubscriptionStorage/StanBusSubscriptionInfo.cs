@@ -1,7 +1,7 @@
 ﻿using System;
 using STAN.Client;
 
-namespace Bus.Stan.SubscriptionStorage
+namespace HotBrokerBus.Stan.SubscriptionStorage
 {
     public class StanSubscriptionInfo
     {

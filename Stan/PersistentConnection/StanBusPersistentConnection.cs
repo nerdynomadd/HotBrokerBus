@@ -1,13 +1,13 @@
 ﻿using Autofac;
-using Bus.Abstractions.Stan;
-using Bus.Stan.Commands;
-using Bus.Stan.Events;
-using Bus.Stan.Jobs;
+using HotBrokerBus.Abstractions.Stan;
+using HotBrokerBus.Stan.Commands;
+using HotBrokerBus.Stan.Events;
+using HotBrokerBus.Stan.Jobs;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using STAN.Client;
 
-namespace Bus.Stan.PersistentConnection
+namespace HotBrokerBus.Stan.PersistentConnection
 {
     public class StanBusPersistentConnection : IStanBusPersistentConnection
     {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Bus.Abstractions.Middleware.Commands;
-using Bus.Abstractions.Middleware.Events;
-using Bus.Middleware;
+using HotBrokerBus.Abstractions.Middleware.Commands;
+using HotBrokerBus.Abstractions.Middleware.Events;
+using HotBrokerBus.Middleware;
 
-namespace Bus.Abstractions.Middleware
+namespace HotBrokerBus.Abstractions.Middleware
 {
     public interface IBusMiddlewareStorage
     {

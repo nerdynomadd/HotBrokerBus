@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bus.Middleware
+namespace HotBrokerBus.Middleware
 {
     public class BusMiddlewareComponent
     {

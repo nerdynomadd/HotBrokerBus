@@ -1,6 +1,6 @@
-﻿using Bus.Abstractions.Middleware.Commands;
+﻿using HotBrokerBus.Abstractions.Middleware.Commands;
 
-namespace Bus.Abstractions.Stan.Commands
+namespace HotBrokerBus.Abstractions.Stan.Commands
 {
     public interface IStanBusCommandParserMiddleware : ICommandBusMiddleware
     {

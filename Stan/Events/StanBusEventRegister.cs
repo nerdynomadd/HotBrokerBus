@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac;
-using Bus.Abstractions.Events;
-using Bus.Abstractions.Stan;
-using Bus.Abstractions.Stan.Events;
-using Bus.Abstractions.Stan.Middleware;
+using HotBrokerBus.Abstractions.Events;
+using HotBrokerBus.Abstractions.Stan;
+using HotBrokerBus.Abstractions.Stan.Events;
+using HotBrokerBus.Abstractions.Stan.Middleware;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using STAN.Client;
 
-namespace Bus.Stan.Events
+namespace HotBrokerBus.Stan.Events
 {
     public class StanBusEventRegister : IStanBusEventRegister
     {
@@ -152,13 +152,14 @@ namespace Bus.Stan.Events
                         if (middlewareComponent == null) return;
 
                         var middlewareExecutionContext = new StanBusEventExecutionContext(middlewareComponent,
+                            subscriptionName,
                             args.Message.Data,
                             typeof(T),
                             null, 
                             typeof(TH),
                             null,
                             args,
-                            scope);
+                            _lifetimeScope);
 
                         await middlewareComponent.Process(middlewareExecutionContext);
                     }

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Bus.Abstractions;
-using Bus.Abstractions.Commands;
-using Bus.Abstractions.Events;
+using HotBrokerBus.Abstractions;
+using HotBrokerBus.Abstractions.Commands;
+using HotBrokerBus.Abstractions.Events;
 
-namespace Bus.Middleware
+namespace HotBrokerBus.Middleware
 {
     public delegate Task BusMiddlewareExecutionDelegate(IBusExecutionContext busExecutionContext);
 

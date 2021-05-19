@@ -1,15 +1,16 @@
 ﻿using System;
 using Autofac;
-using Bus.Abstractions.Commands;
-using Bus.Middleware;
+using HotBrokerBus.Abstractions.Commands;
+using HotBrokerBus.Middleware;
 using NATS.Client;
 using STAN.Client;
 
-namespace Bus.Stan.Commands
+namespace HotBrokerBus.Stan.Commands
 {
     public class StanBusCommandExecutionContext : ICommandExecutionContext
     {
         public StanBusCommandExecutionContext(BusMiddlewareComponent middlewareComponent,
+            string commandTopic,
             byte[] commandData,
             Type commandType,
             ICommand command,
@@ -19,6 +20,8 @@ namespace Bus.Stan.Commands
             ILifetimeScope lifetimeScope)
         {
             MiddlewareComponent = middlewareComponent;
+
+            CommandTopic = commandTopic;
 
             CommandData = commandData;
 
@@ -36,6 +39,8 @@ namespace Bus.Stan.Commands
         }
         
         public BusMiddlewareComponent MiddlewareComponent { get; }
+        
+        public string CommandTopic { get; }
         
         public byte[] CommandData { get; }
         

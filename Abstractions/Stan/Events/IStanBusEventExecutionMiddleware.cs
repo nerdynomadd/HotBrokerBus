@@ -1,6 +1,6 @@
-﻿using Bus.Abstractions.Middleware.Events;
+﻿using HotBrokerBus.Abstractions.Middleware.Events;
 
-namespace Bus.Abstractions.Stan.Events
+namespace HotBrokerBus.Abstractions.Stan.Events
 {
     public interface IStanBusEventExecutionMiddleware : IEventBusMiddleware
     {

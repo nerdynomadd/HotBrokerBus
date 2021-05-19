@@ -4,11 +4,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using Bus.Abstractions.Commands;
-using Bus.Abstractions.Events;
-using Bus.Abstractions.Stan;
-using Bus.Abstractions.Stan.Commands;
-using Bus.Abstractions.Stan.Middleware;
+using HotBrokerBus.Abstractions.Commands;
+using HotBrokerBus.Abstractions.Events;
+using HotBrokerBus.Abstractions.Stan;
+using HotBrokerBus.Abstractions.Stan.Commands;
+using HotBrokerBus.Abstractions.Stan.Middleware;
 using Microsoft.Extensions.Logging;
 using NATS.Client;
 using Newtonsoft.Json;
@@ -16,7 +16,7 @@ using Newtonsoft.Json.Linq;
 using STAN.Client;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Bus.Stan.Commands
+namespace HotBrokerBus.Stan.Commands
 {
     public class StanBusCommandRegister : IStanBusCommandRegister
     {
@@ -183,13 +183,14 @@ namespace Bus.Stan.Commands
                         if (middlewareComponent == null) return;
                         
                         var middlewareExecutionContext = new StanBusCommandExecutionContext(middlewareComponent,
+                            subscriptionName,
                             args.Message.Data,
                             typeof(T),
                             null, 
                             typeof(TH),
                             null,
                             args,
-                            scope);
+                            _lifetimeScope);
                         
                         await middlewareComponent.Process(middlewareExecutionContext);
                     }

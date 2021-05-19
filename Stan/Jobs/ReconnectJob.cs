@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
-using Bus.Abstractions.Stan.Commands;
-using Bus.Abstractions.Stan.Events;
-using Bus.Stan.PersistentConnection;
+using HotBrokerBus.Abstractions.Stan.Commands;
+using HotBrokerBus.Abstractions.Stan.Events;
+using HotBrokerBus.Stan.PersistentConnection;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using STAN.Client;
 
-namespace Bus.Stan.Jobs
+namespace HotBrokerBus.Stan.Jobs
 {
     public class ReconnectJob : IJob
     {

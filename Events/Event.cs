@@ -1,7 +1,7 @@
 ﻿using System;
-using Bus.Abstractions.Events;
+using HotBrokerBus.Abstractions.Events;
 
-namespace Bus.Events
+namespace HotBrokerBus.Events
 {
     public class Event : IEvent
     {

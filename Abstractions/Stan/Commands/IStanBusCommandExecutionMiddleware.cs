@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Bus.Abstractions.Commands;
-using Bus.Abstractions.Middleware.Commands;
-using Bus.Middleware;
+using HotBrokerBus.Abstractions.Middleware.Commands;
+using HotBrokerBus.Abstractions.Commands;
+using HotBrokerBus.Middleware;
 
-namespace Bus.Abstractions.Stan.Commands
+namespace HotBrokerBus.Abstractions.Stan.Commands
 {
     public interface IStanBusCommandExecutionMiddleware : ICommandBusMiddleware
     {

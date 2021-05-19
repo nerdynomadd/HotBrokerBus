@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Bus.Middleware;
+using HotBrokerBus.Middleware;
 
-namespace Bus.Abstractions.Middleware
+namespace HotBrokerBus.Abstractions.Middleware
 {
     public interface IBusMiddleware<T> where T: IBusExecutionContext
     {

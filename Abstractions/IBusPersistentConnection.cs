@@ -1,4 +1,4 @@
-﻿namespace Bus.Abstractions
+﻿namespace HotBrokerBus.Abstractions
 {
     public interface IBusPersistentConnection<out TModel>
     {

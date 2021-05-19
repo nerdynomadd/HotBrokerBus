@@ -5,17 +5,17 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
-using Bus.Abstractions;
-using Bus.Abstractions.Commands;
-using Bus.Abstractions.Events;
-using Bus.Abstractions.Middleware;
-using Bus.Abstractions.Middleware.Commands;
-using Bus.Abstractions.Middleware.Events;
-using Bus.Abstractions.Stan.Middleware;
-using Bus.Middleware;
+using HotBrokerBus.Abstractions.Commands;
+using HotBrokerBus.Abstractions.Events;
+using HotBrokerBus.Abstractions.Middleware.Commands;
+using HotBrokerBus.Abstractions.Middleware.Events;
+using HotBrokerBus.Abstractions.Stan.Middleware;
+using HotBrokerBus.Middleware;
+using HotBrokerBus.Abstractions;
+using HotBrokerBus.Abstractions.Middleware;
 using Quartz;
 
-namespace Bus.Stan.Middleware
+namespace HotBrokerBus.Stan.Middleware
 {
     public class StanBusMiddlewareStorage : IStanBusMiddlewareStorage
     {
@@ -161,7 +161,14 @@ namespace Bus.Stan.Middleware
                     
                     var nextMiddlewareBaseInterface =
                         nextMiddlewareComponentCopy.Component.GetInterface(
-                            "Bus.Abstractions.Middleware.IBusMiddleware`1");
+                            "HotBrokerBus.Abstractions.Middleware.IBusMiddleware`1");
+                    
+                    if (nextMiddlewareBaseInterface == null)
+                    {
+                        middlewareComponent = middlewareComponent.Previous;
+
+                        continue;
+                    }
                     
                     var nextMiddlewareMethod = nextMiddlewareBaseInterface.GetMethod("Invoke");
 
@@ -203,10 +210,17 @@ namespace Bus.Stan.Middleware
 
                 var processMiddlewareBaseInterface =
                     processMiddlewareComponentCopy.Component.GetInterface(
-                        "Bus.Abstractions.Middleware.IBusMiddleware`1");
+                        "HotBrokerBus.Abstractions.Middleware.IBusMiddleware`1");
 
-                var processMiddlewareMethod = processMiddlewareBaseInterface.GetMethod("Invoke", BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.NonPublic);
+                if (processMiddlewareBaseInterface == null)
+                {
+                    middlewareComponent = middlewareComponent.Previous;
+
+                    continue;
+                }
                 
+                var processMiddlewareMethod = processMiddlewareBaseInterface.GetMethod("Invoke", BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.NonPublic);
+
                 Delegate processMiddlewareInternalDelegate;
 
                 if (computeBuildType == ComputeBuildType.Event)

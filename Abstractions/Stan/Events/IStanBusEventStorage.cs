@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bus.Abstractions.Events;
+using HotBrokerBus.Abstractions.Events;
 
-namespace Bus.Abstractions.Stan.Events
+namespace HotBrokerBus.Abstractions.Stan.Events
 {
     public interface IStanBusEventStorage
     {

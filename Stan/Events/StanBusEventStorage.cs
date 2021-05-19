@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bus.Abstractions.Events;
-using Bus.Abstractions.Stan.Events;
+using HotBrokerBus.Abstractions.Events;
+using HotBrokerBus.Abstractions.Stan.Events;
 
-namespace Bus.Stan.Events
+namespace HotBrokerBus.Stan.Events
 {
     public class StanBusEventStorage : IStanBusEventStorage
     {

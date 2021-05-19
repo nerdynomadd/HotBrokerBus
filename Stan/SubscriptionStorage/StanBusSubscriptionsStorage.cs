@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Bus.Abstractions.Commands;
-using Bus.Abstractions.Events;
-using Bus.Abstractions.Stan;
+using HotBrokerBus.Abstractions.Commands;
+using HotBrokerBus.Abstractions.Events;
+using HotBrokerBus.Abstractions.Stan;
 using STAN.Client;
 
-namespace Bus.Stan.SubscriptionStorage
+namespace HotBrokerBus.Stan.SubscriptionStorage
 {
     public class StanBusSubscriptionsStorage : IStanBusSubscriptionsStorage
     {

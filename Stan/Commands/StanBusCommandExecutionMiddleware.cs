@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using Bus.Abstractions.Commands;
-using Bus.Abstractions.Middleware.Commands;
-using Bus.Abstractions.Stan.Commands;
-using Bus.Middleware;
+using HotBrokerBus.Abstractions.Commands;
+using HotBrokerBus.Abstractions.Stan.Commands;
+using HotBrokerBus.Middleware;
+using HotBrokerBus.Abstractions.Middleware.Commands;
 using NATS.Client;
 using Newtonsoft.Json;
 
-namespace Bus.Stan.Commands
+namespace HotBrokerBus.Stan.Commands
 {
     public class StanBusCommandExecutionMiddleware : IStanBusCommandExecutionMiddleware
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Bus.Abstractions.Events
+namespace HotBrokerBus.Abstractions.Events
 {
     public interface IDynamicEventHandler
     {

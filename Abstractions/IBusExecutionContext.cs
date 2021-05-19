@@ -1,6 +1,6 @@
-﻿using Bus.Middleware;
+﻿using HotBrokerBus.Middleware;
 
-namespace Bus.Abstractions
+namespace HotBrokerBus.Abstractions
 {
     public interface IBusExecutionContext
     {

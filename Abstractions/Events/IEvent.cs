@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bus.Abstractions.Events
+namespace HotBrokerBus.Abstractions.Events
 {
     public interface IEvent
     {

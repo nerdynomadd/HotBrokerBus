@@ -1,10 +1,10 @@
 ﻿using Autofac;
-using Bus.Abstractions.Stan;
-using Bus.Abstractions.Stan.Events;
-using Bus.Stan.Events;
+using HotBrokerBus.Abstractions.Stan;
+using HotBrokerBus.Abstractions.Stan.Events;
+using HotBrokerBus.Stan.Events;
 using Microsoft.Extensions.Logging;
 
-namespace Bus.Stan
+namespace HotBrokerBus.Stan
 {
     public class StanBusEventRegisterAutofacModule : Module
     {

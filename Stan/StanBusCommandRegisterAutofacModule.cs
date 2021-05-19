@@ -1,10 +1,10 @@
 ﻿using Autofac;
-using Bus.Abstractions.Stan;
-using Bus.Abstractions.Stan.Commands;
-using Bus.Stan.Commands;
+using HotBrokerBus.Abstractions.Stan;
+using HotBrokerBus.Abstractions.Stan.Commands;
+using HotBrokerBus.Stan.Commands;
 using Microsoft.Extensions.Logging;
 
-namespace Bus.Stan
+namespace HotBrokerBus.Stan
 {
     public class StanBusCommandAutofacModule : Module
     {

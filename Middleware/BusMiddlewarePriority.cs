@@ -1,4 +1,4 @@
-﻿namespace Bus.Middleware
+﻿namespace HotBrokerBus.Middleware
 {
     public enum BusMiddlewarePriority
     {

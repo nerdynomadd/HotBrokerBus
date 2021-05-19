@@ -1,6 +1,6 @@
-﻿using Bus.Abstractions.Commands;
+﻿using HotBrokerBus.Abstractions.Commands;
 
-namespace Bus.Abstractions.Middleware.Commands
+namespace HotBrokerBus.Abstractions.Middleware.Commands
 {
     public interface ICommandBusMiddleware : IBusMiddleware<ICommandExecutionContext>
     {

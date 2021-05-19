@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Bus.Abstractions.Commands;
-using Bus.Abstractions.Events;
+using HotBrokerBus.Abstractions.Commands;
+using HotBrokerBus.Abstractions.Events;
 using STAN.Client;
 
-namespace Bus.Abstractions.Stan.Commands
+namespace HotBrokerBus.Abstractions.Stan.Commands
 {
     public interface IStanBusCommandRegister
     {

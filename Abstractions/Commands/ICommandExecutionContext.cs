@@ -3,10 +3,12 @@ using Autofac;
 using NATS.Client;
 using STAN.Client;
 
-namespace Bus.Abstractions.Commands
+namespace HotBrokerBus.Abstractions.Commands
 {
     public interface ICommandExecutionContext : IBusExecutionContext
     {
+        public string CommandTopic { get; }
+        
         public byte[] CommandData { get; }
         
         public Type CommandType { get; }

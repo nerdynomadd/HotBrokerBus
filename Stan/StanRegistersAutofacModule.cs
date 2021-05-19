@@ -1,20 +1,20 @@
 ﻿using Autofac;
 using Autofac.Extras.Quartz;
-using Bus.Abstractions.Stan;
-using Bus.Abstractions.Stan.Commands;
-using Bus.Abstractions.Stan.Events;
-using Bus.Abstractions.Stan.Middleware;
-using Bus.Middleware;
-using Bus.Stan.Commands;
-using Bus.Stan.Events;
-using Bus.Stan.Jobs;
-using Bus.Stan.Middleware;
-using Bus.Stan.PersistentConnection;
-using Bus.Stan.SubscriptionStorage;
+using HotBrokerBus.Abstractions.Stan;
+using HotBrokerBus.Abstractions.Stan.Commands;
+using HotBrokerBus.Abstractions.Stan.Events;
+using HotBrokerBus.Abstractions.Stan.Middleware;
+using HotBrokerBus.Middleware;
+using HotBrokerBus.Stan.Commands;
+using HotBrokerBus.Stan.Events;
+using HotBrokerBus.Stan.Jobs;
+using HotBrokerBus.Stan.Middleware;
+using HotBrokerBus.Stan.PersistentConnection;
+using HotBrokerBus.Stan.SubscriptionStorage;
 using Quartz;
 using STAN.Client;
 
-namespace Bus.Stan
+namespace HotBrokerBus.Stan
 {
     public class StanRegistersAutofacModule : Module
     {

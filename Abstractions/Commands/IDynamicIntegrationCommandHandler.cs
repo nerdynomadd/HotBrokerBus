@@ -1,4 +1,4 @@
-﻿namespace Bus.Abstractions.Commands
+﻿namespace HotBrokerBus.Abstractions.Commands
 {
     public interface IDynamicIntegrationCommandHandler
     {

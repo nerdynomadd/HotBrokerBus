@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Bus.Abstractions.Events;
-using Bus.Abstractions.Middleware.Events;
-using Bus.Abstractions.Stan.Events;
-using Bus.Middleware;
+using HotBrokerBus.Abstractions.Events;
+using HotBrokerBus.Abstractions.Stan.Events;
+using HotBrokerBus.Middleware;
+using HotBrokerBus.Abstractions.Middleware.Events;
 
-namespace Bus.Stan.Events
+namespace HotBrokerBus.Stan.Events
 {
     public class StanBusEventExecutionMiddleware : IStanBusEventExecutionMiddleware
     {

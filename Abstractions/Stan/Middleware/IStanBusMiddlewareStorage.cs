@@ -1,6 +1,6 @@
-﻿using Bus.Abstractions.Middleware;
+﻿using HotBrokerBus.Abstractions.Middleware;
 
-namespace Bus.Abstractions.Stan.Middleware
+namespace HotBrokerBus.Abstractions.Stan.Middleware
 {
     public interface IStanBusMiddlewareStorage : IBusMiddlewareStorage
     {

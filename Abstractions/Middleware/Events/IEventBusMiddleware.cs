@@ -1,6 +1,6 @@
-﻿using Bus.Abstractions.Events;
+﻿using HotBrokerBus.Abstractions.Events;
 
-namespace Bus.Abstractions.Middleware.Events
+namespace HotBrokerBus.Abstractions.Middleware.Events
 {
     public interface IEventBusMiddleware : IBusMiddleware<IEventExecutionContext>
     {

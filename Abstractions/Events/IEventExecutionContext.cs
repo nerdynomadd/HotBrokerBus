@@ -2,10 +2,12 @@
 using Autofac;
 using STAN.Client;
 
-namespace Bus.Abstractions.Events
+namespace HotBrokerBus.Abstractions.Events
 {
     public interface IEventExecutionContext : IBusExecutionContext
     {
+        public string EventTopic { get; }
+
         public byte[] EventData { get; }
         
         public Type EventType { get; }
