@@ -52,6 +52,8 @@ namespace HotBrokerBus.Stan.PersistentConnection
                     var integrationCommandBus = scope.Resolve<StanBusCommandRegister>();
 
                     var logger = scope.Resolve<ILogger<ReconnectJob>>();
+                    
+                    logger.LogInformation("The connection with Stan message broker was lost. Reconnection process started...");
 
                     var jobData = new JobDataMap
                     {
@@ -70,7 +72,7 @@ namespace HotBrokerBus.Stan.PersistentConnection
                         .StartNow()
                         .WithIdentity("reconnect", "stan")
                         .WithSimpleSchedule(
-                            x => x.WithIntervalInMinutes(1)
+                            x => x.WithIntervalInSeconds(5)
                                 .RepeatForever())
                         .Build();
 

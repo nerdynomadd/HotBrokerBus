@@ -4,7 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <PackageId>HotBrokerBus</PackageId>
     <Description>HotBrokerBus is an extension of Message Broker clients built to provide a fully Oriented Object events or commands managment</Description>
-    <Version>1.0.4</Version>
+    <Version>1.1</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
