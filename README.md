@@ -192,11 +192,11 @@ Middlewares works on a basic system of priority:
 There's two default middlewares registered on both event and command registers. These are both configured on priority first and last because they are the basic logic of event/command parsing logic and event/command handlers call logic.
 These middlewares can be extended by implementing a new class extending their interface:
 
-##### Stan related middlewares
+#### Stan related middlewares
 * IStanBusEventParserMiddleware: Handles the parsing logic of events
 * IStanBusEventExecutionMiddleware: Handles the execution logic of events
 * IStanBusCommandParserMiddleware: Handles the parsing logic of commands
-* IStanBusCommandExecutionMiddleware: Handles the execution logic of events
+* IStanBusCommandExecutionMiddleware: Handles the execution logic of commands
 
 ````c#
 public class CustomStanBusEventParserMiddleware : IStanBusEventParserMiddleware
