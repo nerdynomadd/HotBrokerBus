@@ -15,7 +15,15 @@ namespace HotBrokerBus.Abstractions.Stan.Events
 
         void Publish(string subject, string eventName, IEvent @event);
 
+        public void Subscribe<T, TH>(string subject, string queueGroup)
+            where T : IEvent
+            where TH : IEventHandler<T>;
+        
         void Subscribe<T, TH>(string subject, string queueGroup, StanSubscriptionOptions subscriptionOptions)
+            where T : IEvent
+            where TH : IEventHandler<T>;
+
+        public void Subscribe<T, TH>(string subject, string eventName, string queueGroup)
             where T : IEvent
             where TH : IEventHandler<T>;
 
@@ -24,26 +32,18 @@ namespace HotBrokerBus.Abstractions.Stan.Events
             where T : IEvent
             where TH : IEventHandler<T>;
 
-        /*
-         * void SubscribeDynamic<TH>(string subject, string eventName, string queueGroup, StanSubscriptionOptions subscriptionOptions)
-            where TH : IDynamicIntegrationEventHandler;
-         */
+        public void Close<T>(string subject)
+            where T : IEvent;
 
-        void Close<T, TH>(string subject)
-            where T : IEvent
-            where TH : IEventHandler<T>;
+        public void Close(string subject, string eventName);
 
         void CloseAll();
 
-        void Unsubscribe<T, TH>(string subject)
-            where T : IEvent
-            where TH : IEventHandler<T>;
+        public void Unsubscribe<T>(string subject)
+            where T : IEvent;
+
+        public void Unsubscribe(string subject, string eventName);
 
         void UnsubscribeAll();
-
-        /*
-         * void UnsubscribeDynamic<TH>(string subject, string eventName)
-            where TH : IDynamicIntegrationEventHandler;
-         */
     }
 }

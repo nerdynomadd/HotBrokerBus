@@ -197,13 +197,6 @@ namespace HotBrokerBus.Stan.Commands
                 }));
         }
 
-        public void SubscribeDynamic<TH>(string subject,
-            string commandName)
-            where TH : IDynamicIntegrationCommandHandler
-        {
-            throw new NotImplementedException();
-        }
-
         public void Unsubscribe<T, TH>(string subject)
             where T : ICommand<ICommandResult>
             where TH : ICommandHandler<T, ICommandResult>
@@ -211,11 +204,12 @@ namespace HotBrokerBus.Stan.Commands
             throw new NotImplementedException();
         }
 
-        public void UnsubscribeDynamic<TH>(string subject,
-            string eventName)
-            where TH : IDynamicEventHandler
+        public void Unsubscribe<T, TH>(string subject, string eventName) where T : ICommand<ICommandResult> where TH : ICommandHandler<T, ICommandResult>
         {
-            throw new NotImplementedException();
-        }
+            var subscriptionName = $"{subject}.{eventName}";
+
+            _stanBusSubscriptionsStorage.RemoveSubscription(subscriptionName);
+
+            if (_subscriptions.ContainsKey(subscriptionName)) _subscriptions[subscriptionName].Unsubscribe();        }
     }
 }

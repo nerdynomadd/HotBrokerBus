@@ -116,11 +116,25 @@ namespace HotBrokerBus.Stan.Events
             Connection.Publish(publishName, Encoding.UTF8.GetBytes(jsonMessage));
         }
 
+        public void Subscribe<T, TH>(string subject, string queueGroup)
+            where T : IEvent
+            where TH : IEventHandler<T>
+        {
+            Subscribe<T, TH>(subject, queueGroup, StanSubscriptionOptions.GetDefaultOptions());
+        }
+
         public void Subscribe<T, TH>(string subject, string queueGroup, StanSubscriptionOptions subscriptionOptions)
             where T : IEvent
             where TH : IEventHandler<T>
         {
             Subscribe<T, TH>(subject, typeof(T).Name, queueGroup, subscriptionOptions);
+        }
+        
+        public void Subscribe<T, TH>(string subject, string eventName, string queueGroup)
+            where T : IEvent
+            where TH : IEventHandler<T>
+        {
+            Subscribe<T, TH>(subject, eventName, queueGroup, StanSubscriptionOptions.GetDefaultOptions());
         }
 
         public void Subscribe<T, TH>(string subject, string eventName, string queueGroup,
@@ -166,10 +180,15 @@ namespace HotBrokerBus.Stan.Events
                 }));
         }
 
-        public void Close<T, TH>(string subject)
-            where T : IEvent where TH : IEventHandler<T>
+        public void Close<T>(string subject)
+            where T : IEvent
         {
-            var subscriptionName = $"{subject}.{typeof(T).Name}";
+            Close(subject, typeof(T).Name);
+        }
+
+        public void Close(string subject, string eventName)
+        {
+            var subscriptionName = $"{subject}.{eventName}";
 
             if (_subscriptions.ContainsKey(subscriptionName)) _subscriptions[subscriptionName].Close();
         }
@@ -179,10 +198,15 @@ namespace HotBrokerBus.Stan.Events
             foreach (var subscription in _subscriptions) subscription.Value.Close();
         }
 
-        public void Unsubscribe<T, TH>(string subject)
-            where T : IEvent where TH : IEventHandler<T>
+        public void Unsubscribe<T>(string subject)
+            where T : IEvent
         {
-            var subscriptionName = $"{subject}.{typeof(T).Name}";
+            Unsubscribe(subject, typeof(T).Name);
+        }
+
+        public void Unsubscribe(string subject, string eventName)
+        {
+            var subscriptionName = $"{subject}.{eventName}";
 
             _stanBusSubscriptionsStorage.RemoveSubscription(subscriptionName);
 

@@ -51,16 +51,12 @@ namespace HotBrokerBus.Abstractions.Stan.Commands
             where T : ICommand<ICommandResult>
             where TH : ICommandHandler<T, ICommandResult>;
 
-        void SubscribeDynamic<TH>(string subject,
-            string commandName)
-            where TH : IDynamicIntegrationCommandHandler;
-
         public void Unsubscribe<T, TH>(string subject)
             where T : ICommand<ICommandResult>
             where TH : ICommandHandler<T, ICommandResult>;
-
-        public void UnsubscribeDynamic<TH>(string subject,
-            string commandName)
-            where TH : IDynamicEventHandler;
+        
+        public void Unsubscribe<T, TH>(string subject, string eventName)
+            where T : ICommand<ICommandResult>
+            where TH : ICommandHandler<T, ICommandResult>;
     }
 }

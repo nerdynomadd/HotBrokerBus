@@ -1,16 +1,11 @@
 <!-- PROJECT LOGO -->
-<br />
-<p align="center">
 <h3 align="center">HotBrokerBus</h3>
-
-  <p align="center">
-    An awesome README template to jumpstart your projects!
+<p align="center">
     <br />
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
 </p>
 
 
