@@ -3,9 +3,9 @@
 <p align="center">
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/Kakktuss/HotMessageBus/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/Kakktuss/HotMessageBus/issues">Request Feature</a>
 </p>
 
 
@@ -31,7 +31,7 @@
             <ul>
                 <li><a href="#middleware-concept">Concept</a></li>
                 <li><a href="#middleware-priority">Priority system</a></li>
-                <li><a href="#stan-relatd-middlewares">Default stan related middleware</a></li>
+                <li><a href="#stan-related-middlewares">Default stan related middleware</a></li>
             </ul>
         </li>
       </ul>
@@ -49,7 +49,7 @@ This project has been built on an idea proposed by microsoft and implemented on 
 <br/>
 It gave me the idea to implement an Integration Event pattern and Integration Command pattern built on top of message brokers to interface them using a simple and easy to use system.
 
-Actually, the project work with these brokers:
+Actually, the project works with these brokers:
 * [Nats]("https://docs.nats.io/developing-with-nats/developer")
 * [Nats streaming]("https://docs.nats.io/nats-streaming-concepts/intro")
 
@@ -120,6 +120,8 @@ builder.RegisterCallback(container =>
 ````
 
 ### Middlewares
+
+#### Middleware concept
 
 Once subscribed, when a new event/command is requested over Nats streaming bus, the message will pass all over the middleware pipeline and then to your EventHandler.
 
