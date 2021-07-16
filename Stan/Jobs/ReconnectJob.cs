@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using HotBrokerBus.Abstractions.Stan;
 using HotBrokerBus.Abstractions.Stan.Commands;
 using HotBrokerBus.Abstractions.Stan.Events;
 using HotBrokerBus.Stan.PersistentConnection;
@@ -8,7 +9,7 @@ using STAN.Client;
 
 namespace HotBrokerBus.Stan.Jobs
 {
-    public class ReconnectJob : IJob
+    public class ReconnectJob : IReconnectJob
     {
         public async Task Execute(IJobExecutionContext context)
         {
@@ -17,13 +18,13 @@ namespace HotBrokerBus.Stan.Jobs
             try
             {
                 var stanIntegrationEventBus =
-                    context.JobDetail.JobDataMap["integrationEventBus"] as IStanBusEventRegister;
+                    context.JobDetail.JobDataMap["integrationEventBus"] as IStanEventBusRegister;
 
                 var stanIntegrationCommandBus =
-                    context.JobDetail.JobDataMap["integrationCommandBus"] as IStanBusCommandRegister;
+                    context.JobDetail.JobDataMap["integrationCommandBus"] as IStanCommandBusRegister;
 
                 var stanPersistentConnection =
-                    context.JobDetail.JobDataMap["stanPersistentConnection"] as StanBusPersistentConnection;
+                    context.JobDetail.JobDataMap["stanPersistentConnection"] as IStanBusPersistentConnection;
 
                 stanIntegrationEventBus?.SetConnection(stanPersistentConnection?.CreateModel());
 

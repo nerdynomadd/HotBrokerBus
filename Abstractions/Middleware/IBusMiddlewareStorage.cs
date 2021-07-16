@@ -5,20 +5,14 @@ using HotBrokerBus.Middleware;
 
 namespace HotBrokerBus.Abstractions.Middleware
 {
-    public interface IBusMiddlewareStorage
+    public interface IBusMiddlewareStorage<TMiddlewareType>
     {
-        public void AddEventMiddleware<T>(BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where T: IEventBusMiddleware;
+        public void AddMiddleware<TMiddleware>(BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where TMiddleware: TMiddlewareType;
         
-        public void AddEventMiddleware<T>(string name, BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where T: IEventBusMiddleware;
-        
-        public void AddCommandMiddleware<T>(BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where T: ICommandBusMiddleware;
-        
-        public void AddCommandMiddleware<T>(string name, BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where T: ICommandBusMiddleware;
+        public void AddMiddleware<TMiddleware>(string name, BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where TMiddleware: TMiddlewareType;
 
         public bool HasMiddleware(string name);
 
-        public LinkedList<BusMiddlewareComponent> GetEventMiddlewares();
-
-        public LinkedList<BusMiddlewareComponent> GetCommandMiddlewares();
+        public LinkedList<BusMiddlewareComponent> GetMiddlewares();
     }
 }

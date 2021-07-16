@@ -1,5 +1,4 @@
 ﻿using System;
-using Autofac;
 using STAN.Client;
 
 namespace HotBrokerBus.Abstractions.Events
@@ -20,7 +19,7 @@ namespace HotBrokerBus.Abstractions.Events
 
         public StanMsgHandlerArgs BusArguments { get; }
         
-        public ILifetimeScope LifetimeScope { get; }
+        public IServiceProvider ServiceProvider { get; }
 
     }
 }

@@ -1,90 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Autofac;
 using HotBrokerBus.Abstractions.Commands;
 using HotBrokerBus.Abstractions.Events;
-using HotBrokerBus.Abstractions.Middleware.Commands;
-using HotBrokerBus.Abstractions.Middleware.Events;
-using HotBrokerBus.Abstractions.Stan.Middleware;
 using HotBrokerBus.Middleware;
-using HotBrokerBus.Abstractions;
 using HotBrokerBus.Abstractions.Middleware;
-using Quartz;
 
 namespace HotBrokerBus.Stan.Middleware
 {
-    public class StanBusMiddlewareStorage : IStanBusMiddlewareStorage
+    public abstract class StanBusMiddlewareStorage<TMiddlewareType> : IBusMiddlewareStorage<TMiddlewareType>
     {
-        private enum ComputeBuildType
+        protected enum ComputeBuildType
         {
             Event,
             Command
         }
         
-        private readonly ILifetimeScope _lifetimeScope;
+        private readonly IServiceProvider _serviceProvider;
         
-        private LinkedList<BusMiddlewareComponent> _commandMiddlewareComponents;
+        protected LinkedList<BusMiddlewareComponent> MiddlewareComponents;
 
-        private LinkedList<BusMiddlewareComponent> _eventMiddlewareComponents;
-
-        public StanBusMiddlewareStorage(ILifetimeScope lifetimeScope)
+        public StanBusMiddlewareStorage(IServiceProvider serviceProvider)
         {
-            _lifetimeScope = lifetimeScope;
+            _serviceProvider = serviceProvider;
             
-            _commandMiddlewareComponents = new LinkedList<BusMiddlewareComponent>();
-            
-            _eventMiddlewareComponents = new LinkedList<BusMiddlewareComponent>();
+            MiddlewareComponents = new LinkedList<BusMiddlewareComponent>();
         }
 
-        public void AddEventMiddleware<T>(BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where T : IEventBusMiddleware
+        public abstract void AddMiddleware<T>(BusMiddlewarePriority priority = BusMiddlewarePriority.Basic)
+            where T : TMiddlewareType;
+
+        public abstract void AddMiddleware<T>(string name, BusMiddlewarePriority priority = BusMiddlewarePriority.Basic)
+            where T : TMiddlewareType;
+
+        public bool HasMiddleware(string name)
         {
-            AddEventMiddleware<T>(typeof(T).FullName, priority);
+            return MiddlewareComponents.Any(e => e.Name == name);
         }
-
-        public void AddEventMiddleware<T>(string name, BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where T : IEventBusMiddleware
+        
+        public LinkedList<BusMiddlewareComponent> GetMiddlewares()
         {
-            if (HasMiddleware(name))
-            {
-                throw new ObjectAlreadyExistsException("A middleware with the same name is already registered");
-            }
-
-            _eventMiddlewareComponents.AddFirst(new BusMiddlewareComponent(name, priority, typeof(T)));
-
-            _computeEventsBuild();
-        }
-
-        public void AddCommandMiddleware<T>(BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where T : ICommandBusMiddleware
-        {
-            AddCommandMiddleware<T>(typeof(T).FullName, priority);
-        }
-
-        public void AddCommandMiddleware<T>(string name, BusMiddlewarePriority priority = BusMiddlewarePriority.Basic) where T : ICommandBusMiddleware
-        {
-            if (HasMiddleware(name))
-            {
-                throw new ObjectAlreadyExistsException("A middleware with the same name is already registered");
-            }
-
-            _commandMiddlewareComponents.AddFirst(new BusMiddlewareComponent(name, priority, typeof(T)));
-
-            _computeCommandsBuild();
-        }
-
-        private void _computeEventsBuild()
-        {
-            _eventMiddlewareComponents = computeBuild(_eventMiddlewareComponents, ComputeBuildType.Event);
-        }
-
-        private void _computeCommandsBuild()
-        {
-            _commandMiddlewareComponents = computeBuild(_commandMiddlewareComponents, ComputeBuildType.Command);
-        }
-
-        private LinkedList<BusMiddlewareComponent> computeBuild(LinkedList<BusMiddlewareComponent> computeMiddlewareComponents, ComputeBuildType computeBuildType)
+            return MiddlewareComponents;
+        }        
+        protected LinkedList<BusMiddlewareComponent> ComputeBuild(LinkedList<BusMiddlewareComponent> computeMiddlewareComponents, ComputeBuildType computeBuildType)
         {
             var firstMiddlewareComponents = computeMiddlewareComponents.Where(e => e.Priority == BusMiddlewarePriority.First);
 
@@ -117,7 +77,7 @@ namespace HotBrokerBus.Stan.Middleware
 
                 if (middlewareComponent.Value.Component.IsInterface)
                 {
-                    middleware = _lifetimeScope.Resolve(middlewareComponent.Value.Component);
+                    middleware = _serviceProvider.GetService(middlewareComponent.Value.Component);
                 }
                 else
                 {
@@ -143,7 +103,7 @@ namespace HotBrokerBus.Stan.Middleware
 
                     if (middlewareComponent.Next.Value.Component.IsInterface)
                     {
-                        nextMiddleware = _lifetimeScope.Resolve(middlewareComponent.Next.Value.Component);
+                        nextMiddleware = _serviceProvider.GetService(middlewareComponent.Next.Value.Component);
                     }
                     else
                     {
@@ -260,21 +220,6 @@ namespace HotBrokerBus.Stan.Middleware
             }
 
             return middlewareComponents;
-        }
-
-        public bool HasMiddleware(string name)
-        {
-            return _commandMiddlewareComponents.Any(e => e.Name == name) || _eventMiddlewareComponents.Any(e => e.Name == name);
-        }
-
-        public LinkedList<BusMiddlewareComponent> GetEventMiddlewares()
-        {
-            return _eventMiddlewareComponents;
-        }
-        
-        public LinkedList<BusMiddlewareComponent> GetCommandMiddlewares()
-        {
-            return _commandMiddlewareComponents;
         }
     }
 }

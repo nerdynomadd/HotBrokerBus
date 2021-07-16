@@ -7,7 +7,6 @@ namespace HotBrokerBus.Stan.SubscriptionStorage
     {
         public StanSubscriptionInfo(string subscriptionName,
             string subject,
-            string triggerName,
             string queueGroup,
             Types type,
             StanSubscriptionOptions stanSubscriptionOptions,
@@ -17,9 +16,7 @@ namespace HotBrokerBus.Stan.SubscriptionStorage
             SubscriptionName = subscriptionName;
 
             Subject = subject;
-
-            TriggerName = triggerName;
-
+            
             QueueGroup = queueGroup;
 
             Type = type;
@@ -33,7 +30,6 @@ namespace HotBrokerBus.Stan.SubscriptionStorage
 
         public StanSubscriptionInfo(string subscriptionName,
             string subject,
-            string triggerName,
             Types type,
             Type subscriptionDescriber,
             Type subscriptionDescriberHandler)
@@ -41,9 +37,7 @@ namespace HotBrokerBus.Stan.SubscriptionStorage
             SubscriptionName = subscriptionName;
 
             Subject = subject;
-
-            TriggerName = triggerName;
-
+            
             Type = type;
 
             SubscriptionDescriber = subscriptionDescriber;
@@ -60,9 +54,7 @@ namespace HotBrokerBus.Stan.SubscriptionStorage
         public string SubscriptionName { get; }
 
         public string Subject { get; }
-
-        public string TriggerName { get; }
-
+        
         public string QueueGroup { get; }
 
         public Types Type { get; }

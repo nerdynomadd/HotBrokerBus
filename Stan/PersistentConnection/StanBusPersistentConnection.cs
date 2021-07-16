@@ -1,8 +1,12 @@
-﻿using Autofac;
+﻿using System;
 using HotBrokerBus.Abstractions.Stan;
+using HotBrokerBus.Abstractions.Stan.Commands;
+using HotBrokerBus.Abstractions.Stan.Events;
 using HotBrokerBus.Stan.Commands;
 using HotBrokerBus.Stan.Events;
+using HotBrokerBus.Stan.Extensions.Options.Modules;
 using HotBrokerBus.Stan.Jobs;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using STAN.Client;
@@ -13,73 +17,68 @@ namespace HotBrokerBus.Stan.PersistentConnection
     {
         private readonly StanConnectionFactory _connectionFactory;
 
-        private readonly string _clusterName;
+        private readonly StanModulesOptions _stanModulesOptions;
 
-        private readonly string _appName;
-
-        private readonly StanOptions _stanOptions;
-
-        private readonly ILifetimeScope _lifetimeScope;
+        private readonly IServiceProvider _serviceProvider;
 
         private IStanConnection _connection;
 
-        public StanBusPersistentConnection(string clusterName,
-            string appName,
-            StanOptions stanOptions,
-            ILifetimeScope lifetimeScope)
+        public StanBusPersistentConnection(StanModulesOptions stanModulesOptions,
+            IServiceProvider serviceProvider)
         {
             _connectionFactory = new StanConnectionFactory();
 
-            _clusterName = clusterName;
+            _stanModulesOptions = stanModulesOptions;
 
-            _appName = appName;
-
-            _stanOptions = stanOptions;
-
-            _lifetimeScope = lifetimeScope;
+            _serviceProvider = serviceProvider;
         }
 
         public void InitHooks()
         {
-            _stanOptions.ConnectionLostEventHandler = async (obj, args) =>
+            _stanModulesOptions.ConnectionOptions.StanOptionsOptions.StanOptions.ConnectionLostEventHandler = async (obj, args) =>
             {
-                using (var scope = _lifetimeScope.BeginLifetimeScope())
+                using var scope = _serviceProvider.CreateScope();
+                
+                var schedulerFactory = _serviceProvider.GetService<ISchedulerFactory>();
+
+                if (schedulerFactory == null) return;
+
+                var scheduler = await schedulerFactory.GetScheduler();
+                
+                var integrationEventBus = _serviceProvider.GetService<IStanEventBusRegister>();
+
+                var integrationCommandBus = _serviceProvider.GetService<IStanCommandBusRegister>();
+
+                var stanPersistentConnection = _serviceProvider.GetService<IStanBusPersistentConnection>();
+                
+                var logger = _serviceProvider.GetService<ILogger<ReconnectJob>>();
+                
+                logger.LogInformation("The connection with Stan message broker was lost. Reconnection process started...");
+
+                var jobData = new JobDataMap
                 {
-                    var scheduler = scope.Resolve<IScheduler>();
+                    {"integrationEventBus", integrationEventBus},
+                    {"integrationCommandBus", integrationCommandBus},
+                    {"stanPersistentConnection", this},
+                    {"logger", logger}
+                };
 
-                    var integrationEventBus = scope.Resolve<StanBusEventRegister>();
+                var job = JobBuilder
+                    .Create<ReconnectJob>()
+                    .UsingJobData(jobData)
+                    .Build();
 
-                    var integrationCommandBus = scope.Resolve<StanBusCommandRegister>();
+                var trigger = TriggerBuilder.Create()
+                    .StartNow()
+                    .WithIdentity("reconnect", "stan")
+                    .WithSimpleSchedule(
+                        x => x.WithIntervalInSeconds(5)
+                            .RepeatForever())
+                    .Build();
 
-                    var logger = scope.Resolve<ILogger<ReconnectJob>>();
-                    
-                    logger.LogInformation("The connection with Stan message broker was lost. Reconnection process started...");
+                await scheduler.ScheduleJob(job, trigger);
 
-                    var jobData = new JobDataMap
-                    {
-                        {"integrationEventBus", integrationEventBus},
-                        {"integrationCommandBus", integrationCommandBus},
-                        {"stanPersistentConnection", this},
-                        {"logger", logger}
-                    };
-
-                    var job = JobBuilder
-                        .Create<ReconnectJob>()
-                        .UsingJobData(jobData)
-                        .Build();
-
-                    var trigger = TriggerBuilder.Create()
-                        .StartNow()
-                        .WithIdentity("reconnect", "stan")
-                        .WithSimpleSchedule(
-                            x => x.WithIntervalInSeconds(5)
-                                .RepeatForever())
-                        .Build();
-
-                    await scheduler.ScheduleJob(job, trigger);
-
-                    await scheduler.Start();
-                }
+                await scheduler.Start();
             };
         }
 
@@ -89,7 +88,10 @@ namespace HotBrokerBus.Stan.PersistentConnection
             {
                 InitHooks();
 
-                _connection = _connectionFactory.CreateConnection(_clusterName, _appName, _stanOptions);
+                _connection = _connectionFactory.CreateConnection(
+                    _stanModulesOptions.ConnectionOptions.ClusterName, 
+                    _stanModulesOptions.ConnectionOptions.AppName, 
+                    _stanModulesOptions.ConnectionOptions.StanOptionsOptions.StanOptions);
             }
 
             return _connection;

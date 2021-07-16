@@ -1,7 +1,5 @@
 ﻿using System;
-using Autofac;
 using NATS.Client;
-using STAN.Client;
 
 namespace HotBrokerBus.Abstractions.Commands
 {
@@ -21,6 +19,6 @@ namespace HotBrokerBus.Abstractions.Commands
         
         public MsgHandlerEventArgs BusArguments { get; }
         
-        public ILifetimeScope LifetimeScope { get; }
+        public IServiceProvider ServiceProvider { get; }
     }
 }

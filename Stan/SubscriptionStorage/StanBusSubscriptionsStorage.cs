@@ -16,20 +16,20 @@ namespace HotBrokerBus.Stan.SubscriptionStorage
             _subscriptionInfos = new List<StanSubscriptionInfo>();
         }
 
-        public void AddEventSubscription<T, TH>(string subscriptionName, string subject, string eventName,
+        public void AddEventSubscription<T, TH>(string subscriptionName, string subject,
             string queueGroup, StanSubscriptionOptions subscriptionOptions)
             where T : IEvent
             where TH : IEventHandler
         {
-            _subscriptionInfos.Add(new StanSubscriptionInfo(subscriptionName, subject, eventName, queueGroup,
+            _subscriptionInfos.Add(new StanSubscriptionInfo(subscriptionName, subject, queueGroup,
                 StanSubscriptionInfo.Types.Event, subscriptionOptions, typeof(T), typeof(TH)));
         }
 
-        public void AddCommandSubscription<T, TH>(string subscriptionName, string subject, string triggerName)
+        public void AddCommandSubscription<T, TH>(string subscriptionName, string subject)
             where T : ICommand
             where TH : ICommandHandler
         {
-            _subscriptionInfos.Add(new StanSubscriptionInfo(subscriptionName, subject, triggerName,
+            _subscriptionInfos.Add(new StanSubscriptionInfo(subscriptionName, subject,
                 StanSubscriptionInfo.Types.Command, typeof(T), typeof(TH)));
         }
 
