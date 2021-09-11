@@ -2,7 +2,7 @@
 
 namespace HotBrokerBus.Stan.Jobs
 {
-    public interface IReconnectJob : IJob
+    public interface IStanReconnectJob : IJob
     {
         
     }

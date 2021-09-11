@@ -38,7 +38,7 @@ namespace HotBrokerBus.Stan.HostedService
                 return;
             }
             
-            var eventBusRegister = (IStanEventBusRegister) _serviceProvider.GetService(typeof(IStanEventBusRegister));
+            var eventBusRegister = (IStanEventBusSubscriberClient) _serviceProvider.GetService(typeof(IStanEventBusSubscriberClient));
 
             if (eventBusRegister == null)
             {
@@ -47,8 +47,8 @@ namespace HotBrokerBus.Stan.HostedService
             
             foreach ((var eventSubscriptionName, var eventSubscriptionDefinition) in eventBusOptions.Subscriptions.Config.Events)
             {
-                typeof(StanEventBusRegister)
-                    .GetMethod(nameof(StanEventBusRegister.Subscribe),
+                typeof(StanEventBusSubscriberClient)
+                    .GetMethod(nameof(StanEventBusSubscriberClient.Subscribe),
                         new Type[] {typeof(string), typeof(string), typeof(StanSubscriptionOptions)})?
                     .MakeGenericMethod(eventSubscriptionDefinition.Item1, eventSubscriptionDefinition.Item2)
                     .Invoke(eventBusRegister, new object?[] { eventSubscriptionName, eventSubscriptionDefinition.Item3, eventSubscriptionDefinition.Item4 });
@@ -64,7 +64,7 @@ namespace HotBrokerBus.Stan.HostedService
                 return;
             }
             
-            var commandBusRegister = (IStanCommandBusRegister) _serviceProvider.GetService(typeof(IStanCommandBusRegister));
+            var commandBusRegister = (IStanCommandBusSubscriberClient) _serviceProvider.GetService(typeof(IStanCommandBusSubscriberClient));
 
             if (commandBusRegister == null)
             {
@@ -73,8 +73,8 @@ namespace HotBrokerBus.Stan.HostedService
             
             foreach ((var commandSubscriptionName, var commandSubscriptionDefinition) in commandBusOptions.Subscriptions.Config.Commands)
             {
-                typeof(StanCommandBusRegister)
-                    .GetMethod(nameof(StanCommandBusRegister.Subscribe), new Type[] {typeof(string)})?
+                typeof(StanCommandBusSubscriberClient)
+                    .GetMethod(nameof(StanCommandBusSubscriberClient.Subscribe), new Type[] {typeof(string)})?
                     .MakeGenericMethod(commandSubscriptionDefinition.Item1, commandSubscriptionDefinition.Item2)
                     .Invoke(commandBusRegister, new object?[]
                     {

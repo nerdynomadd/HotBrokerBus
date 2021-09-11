@@ -2,8 +2,6 @@
 using HotBrokerBus.Abstractions.Stan;
 using HotBrokerBus.Abstractions.Stan.Commands;
 using HotBrokerBus.Abstractions.Stan.Events;
-using HotBrokerBus.Stan.Commands;
-using HotBrokerBus.Stan.Events;
 using HotBrokerBus.Stan.Extensions.Options.Modules;
 using HotBrokerBus.Stan.Jobs;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,13 +43,13 @@ namespace HotBrokerBus.Stan.PersistentConnection
 
                 var scheduler = await schedulerFactory.GetScheduler();
                 
-                var integrationEventBus = _serviceProvider.GetService<IStanEventBusRegister>();
+                var integrationEventBus = _serviceProvider.GetService<IStanEventBusSubscriberClient>();
 
-                var integrationCommandBus = _serviceProvider.GetService<IStanCommandBusRegister>();
+                var integrationCommandBus = _serviceProvider.GetService<IStanCommandBusSubscriberClient>();
 
                 var stanPersistentConnection = _serviceProvider.GetService<IStanBusPersistentConnection>();
                 
-                var logger = _serviceProvider.GetService<ILogger<ReconnectJob>>();
+                var logger = _serviceProvider.GetService<ILogger<StanStanReconnectJob>>();
                 
                 logger.LogInformation("The connection with Stan message broker was lost. Reconnection process started...");
 
@@ -64,7 +62,7 @@ namespace HotBrokerBus.Stan.PersistentConnection
                 };
 
                 var job = JobBuilder
-                    .Create<ReconnectJob>()
+                    .Create<StanStanReconnectJob>()
                     .UsingJobData(jobData)
                     .Build();
 

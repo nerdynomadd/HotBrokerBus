@@ -3,7 +3,7 @@ using STAN.Client;
 
 namespace HotBrokerBus.Abstractions.Stan.Events
 {
-    public interface IStanEventBusRegister
+    public interface IStanEventBusSubscriberClient
     {
         public IStanConnection Connection { get; set; }
 

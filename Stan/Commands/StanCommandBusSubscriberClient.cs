@@ -15,25 +15,21 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace HotBrokerBus.Stan.Commands
 {
-    public class StanCommandBusRegister : IStanCommandBusRegister
+    public class StanCommandBusSubscriberClient : IStanCommandBusSubscriberClient
     {
-        private readonly IStanBusPersistentConnection _stanBusPersistentConnection;
-
         private readonly IStanBusSubscriptionsStorage _stanBusSubscriptionsStorage;
 
         private readonly IServiceProvider _serviceProvider;
 
-        private readonly ILogger<StanCommandBusRegister> _logger;
+        private readonly ILogger<StanCommandBusSubscriberClient> _logger;
 
         private readonly Dictionary<string, IAsyncSubscription> _subscriptions;
 
-        public StanCommandBusRegister(IStanBusPersistentConnection stanBusPersistentConnection,
+        public StanCommandBusSubscriberClient(IStanBusPersistentConnection stanBusPersistentConnection,
             IStanBusSubscriptionsStorage stanBusSubscriptionsStorage,
             IServiceProvider serviceProvider,
-            ILogger<StanCommandBusRegister> logger)
+            ILogger<StanCommandBusSubscriberClient> logger)
         {
-            _stanBusPersistentConnection = stanBusPersistentConnection;
-
             _stanBusSubscriptionsStorage = stanBusSubscriptionsStorage;
 
             _serviceProvider = serviceProvider;
@@ -42,12 +38,12 @@ namespace HotBrokerBus.Stan.Commands
 
             _subscriptions = new Dictionary<string, IAsyncSubscription>();
 
-            Connection = _stanBusPersistentConnection.CreateModel();
+            Connection = stanBusPersistentConnection.CreateModel();
         }
 
         public IStanConnection Connection { get; set; }
 
-        void IStanCommandBusRegister.Resume()
+        void IStanCommandBusSubscriberClient.Resume()
         {
             // Delete the internal subscriptions registry
             _subscriptions.Clear();
@@ -57,7 +53,7 @@ namespace HotBrokerBus.Stan.Commands
                 var type = subscription.SubscriptionDescriber;
                 var type2 = subscription.SubscriptionDescriberHandler;
 
-                typeof(StanCommandBusRegister)
+                typeof(StanCommandBusSubscriberClient)
                     .GetMethod(nameof(Subscribe), new Type[] {typeof(string)})?
                     .MakeGenericMethod(type, type2)
                     .Invoke(this, new object[]
@@ -67,56 +63,9 @@ namespace HotBrokerBus.Stan.Commands
             }
         }
 
-        void IStanCommandBusRegister.SetConnection(IStanConnection connection)
+        void IStanCommandBusSubscriberClient.SetConnection(IStanConnection connection)
         {
             Connection = connection;
-        }
-
-        public TIntegrationCommandResult Send<TIntegrationCommandResult>(string subject,
-            ICommand<TIntegrationCommandResult> command)
-            where TIntegrationCommandResult : ICommandResult
-        {
-            var requestName = $"{subject}";
-            var jsonMessage = JsonConvert.SerializeObject(command);
-
-            var msg = Connection.NATSConnection.Request(requestName, Encoding.UTF8.GetBytes(jsonMessage));
-
-            return JsonSerializer.Deserialize<TIntegrationCommandResult>(
-                Encoding.UTF8.GetString(msg.Data));
-        }
-
-        public async Task SendAsync(string subject,
-            ICommand command,
-            int timeout = 5000)
-        {
-            if (Connection == null || Connection.NATSConnection == null || Connection.NATSConnection.IsClosed() ||
-                Connection.NATSConnection.IsReconnecting())
-                Connection = _stanBusPersistentConnection.CreateModel();
-
-            var requestName = $"{subject}";
-            var jsonMessages = JsonConvert.SerializeObject(command);
-
-            await Connection.NATSConnection.RequestAsync(requestName, Encoding.UTF8.GetBytes(jsonMessages),
-                timeout);
-            
-        }
-
-        public async Task<TIntegrationCommandResult> SendAsync<TIntegrationCommandResult>(string subject,
-            ICommand<TIntegrationCommandResult> command,
-            int timeout = 5000)
-            where TIntegrationCommandResult : ICommandResult
-        {
-            if (Connection == null || Connection.NATSConnection == null || Connection.NATSConnection.IsClosed() ||
-                Connection.NATSConnection.IsReconnecting())
-                Connection = _stanBusPersistentConnection.CreateModel();
-
-            var requestName = $"{subject}";
-            var jsonMessages = JsonConvert.SerializeObject(command);
-
-            var msg = await Connection.NATSConnection.RequestAsync(requestName, Encoding.UTF8.GetBytes(jsonMessages),
-                timeout);
-
-            return JsonSerializer.Deserialize<TIntegrationCommandResult>(Encoding.UTF8.GetString(msg.Data));
         }
 
         public void Subscribe<T, TH>(string subject)

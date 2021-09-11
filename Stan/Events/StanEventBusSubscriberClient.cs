@@ -13,7 +13,7 @@ using STAN.Client;
 
 namespace HotBrokerBus.Stan.Events
 {
-    public class StanEventBusRegister : IStanEventBusRegister
+    public class StanEventBusSubscriberClient : IStanEventBusSubscriberClient
     {
         private readonly IStanBusPersistentConnection _stanBusPersistentConnection;
 
@@ -23,15 +23,15 @@ namespace HotBrokerBus.Stan.Events
 
         private readonly IServiceProvider _serviceProvider;
 
-        private readonly ILogger<StanEventBusRegister> _logger;
+        private readonly ILogger<StanEventBusSubscriberClient> _logger;
 
         private readonly Dictionary<string, IStanSubscription> _subscriptions;
 
-        public StanEventBusRegister(IStanBusPersistentConnection stanBusPersistentConnection,
+        public StanEventBusSubscriberClient(IStanBusPersistentConnection stanBusPersistentConnection,
             IStanBusSubscriptionsStorage stanBusSubscriptionsStorage,
             IStanEventBusStorage storage,
             IServiceProvider serviceProvider,
-            ILogger<StanEventBusRegister> logger)
+            ILogger<StanEventBusSubscriberClient> logger)
         {
             _stanBusPersistentConnection = stanBusPersistentConnection;
 
@@ -50,7 +50,7 @@ namespace HotBrokerBus.Stan.Events
 
         public IStanConnection Connection { get; set; }
 
-        void IStanEventBusRegister.Resume()
+        void IStanEventBusSubscriberClient.Resume()
         {
             // Delete the internal subscriptions registry
             _subscriptions.Clear();
@@ -60,7 +60,7 @@ namespace HotBrokerBus.Stan.Events
                 var type = subscription.SubscriptionDescriber;
                 var type2 = subscription.SubscriptionDescriberHandler;
 
-                typeof(StanEventBusRegister)
+                typeof(StanEventBusSubscriberClient)
                     .GetMethod(nameof(Subscribe),
                         new Type[] {typeof(string), typeof(string), typeof(StanSubscriptionOptions)})?
                     .MakeGenericMethod(type, type2)
@@ -74,7 +74,7 @@ namespace HotBrokerBus.Stan.Events
 
             foreach (var message in _storage.RetrieveEventMessages())
             {
-                typeof(StanEventBusRegister)
+                typeof(StanEventBusSubscriberClient)
                     .GetMethod(nameof(Publish), new Type[] {typeof(string), typeof(string), typeof(IEvent)})?
                     .Invoke(this, new object[]
                     {
@@ -86,7 +86,7 @@ namespace HotBrokerBus.Stan.Events
             _storage.ClearMessages();
         }
 
-        void IStanEventBusRegister.SetConnection(IStanConnection connection)
+        void IStanEventBusSubscriberClient.SetConnection(IStanConnection connection)
         {
             Connection = connection;
         }

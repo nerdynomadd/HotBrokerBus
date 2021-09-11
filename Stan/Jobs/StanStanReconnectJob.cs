@@ -9,19 +9,19 @@ using STAN.Client;
 
 namespace HotBrokerBus.Stan.Jobs
 {
-    public class ReconnectJob : IReconnectJob
+    public class StanStanReconnectJob : IStanReconnectJob
     {
         public async Task Execute(IJobExecutionContext context)
         {
-            var logger = context.JobDetail.JobDataMap["logger"] as ILogger<ReconnectJob>;
+            var logger = context.JobDetail.JobDataMap["logger"] as ILogger<StanStanReconnectJob>;
             
             try
             {
                 var stanIntegrationEventBus =
-                    context.JobDetail.JobDataMap["integrationEventBus"] as IStanEventBusRegister;
+                    context.JobDetail.JobDataMap["integrationEventBus"] as IStanEventBusSubscriberClient;
 
                 var stanIntegrationCommandBus =
-                    context.JobDetail.JobDataMap["integrationCommandBus"] as IStanCommandBusRegister;
+                    context.JobDetail.JobDataMap["integrationCommandBus"] as IStanCommandBusSubscriberClient;
 
                 var stanPersistentConnection =
                     context.JobDetail.JobDataMap["stanPersistentConnection"] as IStanBusPersistentConnection;
