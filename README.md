@@ -25,13 +25,20 @@
     <li>
     <a href="#usage">Usage</a>
       <ul>
-        <li><a href="#nats-streaming">Nats streaming</a></li>
+        <li>
+            <a href="#nats-streaming">Nats streaming</a>
+            <ul>
+                <li><a href="#nats-streaming-modules">Modules</a></li>    
+                <li><a href="#nats-streaming-eventbus">Event Bus</a></li>    
+                <li><a href="#nats-streaming-commandbus">Command bus</a></li>    
+            </ul>
+        </li>
         <li>
             <a href="#middlewares">Middlewares</a>
             <ul>
                 <li><a href="#middleware-concept">Concept</a></li>
                 <li><a href="#middleware-priority">Priority system</a></li>
-                <li><a href="#stan-related-middlewares">Default stan related middleware</a></li>
+                <li><a href="#stan-related-middlewares">Default nats streaming related middlewares</a></li>
             </ul>
         </li>
       </ul>
@@ -65,8 +72,6 @@ To install this library just reference it using nuget package manager:
 ````
 dotnet add package HotBrokerBus
 ````
-
-If this package is being used on an Asp.Net core project you'll need to reference then the package ``Autofac.AspNetCore`` which add a new the support of a new method on your Startup class: ConfigureContainer
 
 <!-- USAGE -->
 ## Usage

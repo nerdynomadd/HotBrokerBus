@@ -89,7 +89,7 @@ namespace HotBrokerBus.Stan.Extensions
 
         public static IServiceCollection AddStanCommandBusConsumerClient(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IStanCommandBusConsumerClient>();
+            serviceCollection.AddSingleton<IStanCommandBusConsumerClient, StanCommandBusConsumerClient>();
 
             return serviceCollection;
         }
