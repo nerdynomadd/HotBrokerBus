@@ -1,4 +1,11 @@
 bin/
 obj/
+output/
 
 .idea
+
+src/bin
+src/obj
+
+example/bin
+example/obj

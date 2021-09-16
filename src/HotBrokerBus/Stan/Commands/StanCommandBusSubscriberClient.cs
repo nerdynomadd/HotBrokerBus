@@ -84,28 +84,27 @@ namespace HotBrokerBus.Stan.Commands
             _subscriptions.Add(subscriptionName, Connection.NATSConnection.SubscribeAsync(subscriptionName,
                 async (sender, args) =>
                 {
-                    using (var scope = _serviceProvider.CreateScope())
-                    {
-                        var middlewareStorage = _serviceProvider.GetService<IStanCommandBusMiddlewareStorage>();
+                    using var scope = _serviceProvider.CreateScope();
+                        
+                    var middlewareStorage = _serviceProvider.GetService<IStanCommandBusMiddlewareStorage>();
 
-                        if (middlewareStorage == null) return;
+                    if (middlewareStorage == null) return;
                         
-                        var middlewareComponent = middlewareStorage?.GetMiddlewares()?.First?.Value;
+                    var middlewareComponent = middlewareStorage?.GetMiddlewares()?.First?.Value;
 
-                        if (middlewareComponent == null) return;
+                    if (middlewareComponent == null) return;
                         
-                        var middlewareExecutionContext = new StanCommandBusExecutionContext(middlewareComponent,
-                            subscriptionName,
-                            args.Message.Data,
-                            typeof(T),
-                            null, 
-                            typeof(TH),
-                            null,
-                            args,
-                            _serviceProvider);
+                    var middlewareExecutionContext = new StanCommandBusExecutionContext(middlewareComponent,
+                        subscriptionName,
+                        args.Message.Data,
+                        typeof(T),
+                        null, 
+                        typeof(TH),
+                        null,
+                        args,
+                        _serviceProvider);
                         
-                        await middlewareComponent.Process(middlewareExecutionContext);
-                    }
+                    await middlewareComponent.Process(middlewareExecutionContext);
                 }));
         }
         

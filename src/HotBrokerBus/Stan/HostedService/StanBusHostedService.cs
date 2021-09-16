@@ -5,8 +5,12 @@ using HotBrokerBus.Abstractions.Stan.Commands;
 using HotBrokerBus.Abstractions.Stan.Events;
 using HotBrokerBus.Stan.Commands;
 using HotBrokerBus.Stan.Events;
+using HotBrokerBus.Stan.Extensions.Configuration.Modules;
 using HotBrokerBus.Stan.Extensions.Options.Event;
+using HotBrokerBus.Stan.Extensions.Options.Modules;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using STAN.Client;
 
 namespace HotBrokerBus.Stan.HostedService
@@ -15,16 +19,47 @@ namespace HotBrokerBus.Stan.HostedService
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public StanBusHostedService(IServiceProvider serviceProvider)
+        private readonly StanModulesOptions _stanModulesOptions;
+
+        private readonly ILogger<StanBusHostedService> _logger;
+
+        public StanBusHostedService(IServiceProvider serviceProvider,
+            StanModulesOptions stanModulesOptions,
+            ILogger<StanBusHostedService> logger)
         {
             _serviceProvider = serviceProvider;
+
+            _stanModulesOptions = stanModulesOptions;
+
+            _logger = logger;
         }
         
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _startEventBus();
-            
-            _startCommandBus();
+            if (_stanModulesOptions.HostedServiceOptions.Active)
+            {
+                void StartBuses()
+                {
+                    _startEventBus();
+
+                    _startCommandBus();
+                }
+
+                if (_stanModulesOptions.HostedServiceOptions.ThrowsStartingException)
+                {
+                    StartBuses();
+                } else
+                {
+                    try
+                    {
+                        StartBuses();
+                    }
+                    catch (Exception exception)
+                    {
+                        _logger.LogError("An error happened while trying to start Stan buses: ",  exception);
+                    }
+                }
+            }
 
             return Task.CompletedTask;
         }

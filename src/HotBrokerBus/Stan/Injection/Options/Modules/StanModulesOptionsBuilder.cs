@@ -1,6 +1,7 @@
 ﻿using System;
 using HotBrokerBus.Stan.Extensions.Configuration.Modules;
 using HotBrokerBus.Stan.Extensions.Options.Modules.Connection;
+using HotBrokerBus.Stan.Extensions.Options.Modules.HostedService;
 using Microsoft.Extensions.Configuration;
 
 namespace HotBrokerBus.Stan.Extensions.Options.Modules
@@ -10,18 +11,29 @@ namespace HotBrokerBus.Stan.Extensions.Options.Modules
         private StanModulesParameters _stanModulesParameters;
 
         private StanModulesConnectionOptionsBuilder _stanModulesConnectionOptionsBuilder;
+
+        private StanModulesHostedServiceOptionsBuilder _stanModulesHostedServiceOptionsBuilder;
         
         public StanModulesOptionsBuilder()
         {
             _stanModulesParameters = new();
 
             _stanModulesConnectionOptionsBuilder = new(_stanModulesParameters.Connection);
+
+            _stanModulesHostedServiceOptionsBuilder = new(_stanModulesParameters.HostedService);
         }
 
         public StanModulesOptionsBuilder ConfigureConnection(Action<StanModulesConnectionOptionsBuilder> options)
         {
             options(_stanModulesConnectionOptionsBuilder);
             
+            return this;
+        }
+
+        public StanModulesOptionsBuilder ConfigureHostedService(Action<StanModulesHostedServiceOptionsBuilder> options)
+        {
+            options(_stanModulesHostedServiceOptionsBuilder);
+
             return this;
         }
 
@@ -36,7 +48,9 @@ namespace HotBrokerBus.Stan.Extensions.Options.Modules
         {
             StanModulesConnectionOptions connectionOptions = _stanModulesConnectionOptionsBuilder.Build();
 
-            return new StanModulesOptions(connectionOptions);
+            StanModulesHostedServiceOptions hostedServiceOptions = _stanModulesHostedServiceOptionsBuilder.Build();
+            
+            return new StanModulesOptions(connectionOptions, hostedServiceOptions);
         }
     }
 }

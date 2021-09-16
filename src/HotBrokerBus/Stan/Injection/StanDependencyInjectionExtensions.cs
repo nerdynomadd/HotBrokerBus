@@ -33,8 +33,10 @@ namespace HotBrokerBus.Stan.Extensions
             StanModulesOptionsBuilder optionsBuilder = new();
 
             options(optionsBuilder);
+
+            var buildedOptions = optionsBuilder.Build();
             
-            serviceCollection.AddSingleton(optionsBuilder.Build());
+            serviceCollection.AddSingleton(buildedOptions);
             
             serviceCollection.AddSingleton<IStanReconnectJob, StanStanReconnectJob>();
 
@@ -42,7 +44,10 @@ namespace HotBrokerBus.Stan.Extensions
 
             serviceCollection.AddSingleton<IStanBusPersistentConnection, StanBusPersistentConnection>();
 
-            serviceCollection.AddHostedService<StanBusHostedService>();
+            if (buildedOptions.HostedServiceOptions.Active)
+            {
+                serviceCollection.AddHostedService<StanBusHostedService>();
+            }
 
             serviceCollection._addQuartzSchedulerModule();
 

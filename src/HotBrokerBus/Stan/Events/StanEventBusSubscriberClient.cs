@@ -133,26 +133,25 @@ namespace HotBrokerBus.Stan.Events
             _subscriptions.Add(subscriptionName, Connection.Subscribe(subscriptionName, queueGroup, subscriptionOptions,
                 async (sender, args) =>
                 {
-                    using (var scope = _serviceProvider.CreateScope())
-                    {
-                        var middlewareStorage = _serviceProvider.GetService<IStanEventBusMiddlewareStorage>();
+                    using var scope = _serviceProvider.CreateScope();
+                    
+                    var middlewareStorage = _serviceProvider.GetService<IStanEventBusMiddlewareStorage>();
                         
-                        var middlewareComponent = middlewareStorage?.GetMiddlewares()?.First?.Value;
+                    var middlewareComponent = middlewareStorage?.GetMiddlewares()?.First?.Value;
 
-                        if (middlewareComponent == null) return;
+                    if (middlewareComponent == null) return;
 
-                        var middlewareExecutionContext = new StanEventBusExecutionContext(middlewareComponent,
-                            subscriptionName,
-                            args.Message.Data,
-                            typeof(T),
-                            null, 
-                            typeof(TH),
-                            null,
-                            args,
-                            _serviceProvider);
+                    var middlewareExecutionContext = new StanEventBusExecutionContext(middlewareComponent,
+                        subscriptionName,
+                        args.Message.Data,
+                        typeof(T),
+                        null, 
+                        typeof(TH),
+                        null,
+                        args,
+                        _serviceProvider);
 
-                        await middlewareComponent.Process(middlewareExecutionContext);
-                    }
+                    await middlewareComponent.Process(middlewareExecutionContext);
                 }));
         }
 
