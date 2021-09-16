@@ -9,6 +9,8 @@ namespace HotBrokerBus.Stan.Extensions.Configuration.Modules
         public StanModulesParameters()
         {
             Connection = new StanModulesConnectionParameters();
+
+            HostedService = new StanModulesHostedServiceParameters();
         }
         
         [JsonPropertyName("connection")]
