@@ -55,9 +55,9 @@ namespace HotBrokerBus.Stan.HostedService
                     {
                         StartBuses();
                     }
-                    catch (NATSConnectionException connectionException)
+                    catch (Exception exception) when (exception is NATSConnectionException || exception is StanConnectionException)
                     {
-                        _logger.LogError($"An error happened while trying to connect to a NATS cluster: {connectionException}");
+                        _logger.LogError($"An error happened while trying to connect to a NATS cluster: {exception}");
                     }
                     catch (Exception exception)
                     {
