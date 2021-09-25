@@ -9,11 +9,11 @@ using STAN.Client;
 
 namespace HotBrokerBus.Stan.Jobs
 {
-    public class StanStanReconnectJob : IStanReconnectJob
+    public class StanReconnectJob : IStanReconnectJob
     {
         public async Task Execute(IJobExecutionContext context)
         {
-            var logger = context.JobDetail.JobDataMap["logger"] as ILogger<StanStanReconnectJob>;
+            var logger = context.JobDetail.JobDataMap["logger"] as ILogger<StanReconnectJob>;
             
             try
             {

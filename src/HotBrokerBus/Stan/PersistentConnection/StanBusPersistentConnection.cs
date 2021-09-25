@@ -46,10 +46,10 @@ namespace HotBrokerBus.Stan.PersistentConnection
                 var integrationEventBus = _serviceProvider.GetService<IStanEventBusSubscriberClient>();
 
                 var integrationCommandBus = _serviceProvider.GetService<IStanCommandBusSubscriberClient>();
-
-                var stanPersistentConnection = _serviceProvider.GetService<IStanBusPersistentConnection>();
                 
-                var logger = _serviceProvider.GetService<ILogger<StanStanReconnectJob>>();
+                var stanPersistentConnection = _serviceProvider.GetService<IStanBusPersistentConnection>();
+
+                var logger = _serviceProvider.GetService<ILogger<StanReconnectJob>>();
                 
                 logger.LogInformation("The connection with Stan message broker was lost. Reconnection process started...");
 
@@ -57,12 +57,12 @@ namespace HotBrokerBus.Stan.PersistentConnection
                 {
                     {"integrationEventBus", integrationEventBus},
                     {"integrationCommandBus", integrationCommandBus},
-                    {"stanPersistentConnection", this},
+                    {"stanPersistentConnection", stanPersistentConnection},
                     {"logger", logger}
                 };
 
                 var job = JobBuilder
-                    .Create<StanStanReconnectJob>()
+                    .Create<StanReconnectJob>()
                     .UsingJobData(jobData)
                     .Build();
 
@@ -82,7 +82,7 @@ namespace HotBrokerBus.Stan.PersistentConnection
 
         public IStanConnection CreateModel()
         {
-            if (_connection == null || _connection.NATSConnection == null || _connection.NATSConnection.IsClosed())
+            if (_connection?.NATSConnection is null || _connection.NATSConnection.IsClosed())
             {
                 InitHooks();
 

@@ -38,7 +38,7 @@ namespace HotBrokerBus.Stan.Extensions
             
             serviceCollection.AddSingleton(buildedOptions);
             
-            serviceCollection.AddSingleton<IStanReconnectJob, StanStanReconnectJob>();
+            serviceCollection.AddSingleton<IStanReconnectJob, StanReconnectJob>();
 
             serviceCollection.AddSingleton<IStanBusSubscriptionsStorage, StanBusSubscriptionsStorage>();
 

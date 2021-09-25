@@ -7,9 +7,9 @@ namespace HotBrokerBus.Stan.Extensions.Configuration.Modules.HostedService
 
 		[JsonPropertyName("active")]
 		public bool Active { get; set; } = true;
-		
+
 		[JsonPropertyName("throwsStartingException")]
-		public bool ThrowsStartingException { get; set; }
-		
+		public bool ThrowsStartingException { get; set; } = true;
+
 	}
 }

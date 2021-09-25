@@ -12,7 +12,7 @@ namespace HotBrokerBus.Stan.Extensions.Options.Modules.HostedService
 			_parameters = parameters;
 		}
 
-		public StanModulesHostedServiceOptionsBuilder SetIsActive(bool isActive= true)
+		public StanModulesHostedServiceOptionsBuilder SetIsActive(bool isActive = true)
 		{
 			_parameters.Active = isActive;
 

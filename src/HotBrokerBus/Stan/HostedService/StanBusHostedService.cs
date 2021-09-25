@@ -11,6 +11,7 @@ using HotBrokerBus.Stan.Extensions.Options.Modules;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NATS.Client;
 using STAN.Client;
 
 namespace HotBrokerBus.Stan.HostedService
@@ -54,9 +55,13 @@ namespace HotBrokerBus.Stan.HostedService
                     {
                         StartBuses();
                     }
+                    catch (NATSConnectionException connectionException)
+                    {
+                        _logger.LogError($"An error happened while trying to connect to a NATS cluster: {connectionException}");
+                    }
                     catch (Exception exception)
                     {
-                        _logger.LogError("An error happened while trying to start Stan buses: ",  exception);
+                        _logger.LogError($"An error happened while trying to start Stan buses: {exception}");
                     }
                 }
             }
@@ -68,14 +73,14 @@ namespace HotBrokerBus.Stan.HostedService
         {
             var eventBusOptions = (StanEventBusOptions) _serviceProvider.GetService(typeof(StanEventBusOptions));
 
-            if (eventBusOptions == null)
+            if (eventBusOptions is null)
             {
                 return;
             }
             
             var eventBusRegister = (IStanEventBusSubscriberClient) _serviceProvider.GetService(typeof(IStanEventBusSubscriberClient));
 
-            if (eventBusRegister == null)
+            if (eventBusRegister is null)
             {
                 return;
             }

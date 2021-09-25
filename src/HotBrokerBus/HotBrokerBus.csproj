@@ -13,7 +13,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <Description>HotBrokerBus is an extension of Message Broker clients built to provide a fully Oriented Object events or commands managment</Description>
-    <Version>1.2.4</Version>
+    <Version>1.2.5</Version>
     <PackageId>HotBrokerBus</PackageId>        
     <PackageTags>Nats Stan Nats-streaming Broker Bus Event Command RPC</PackageTags>
     <RootNamespace>HotBrokerBus</RootNamespace>
@@ -26,8 +26,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Quartz" Version="3.3.2" />
-    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.3.2" />
+    <PackageReference Include="Quartz" Version="3.3.3" />
+    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.3.3" />
     <PackageReference Include="Quartz.Lambda" Version="1.0.5" />
     <PackageReference Include="STAN.Client" Version="0.3.0" />
   </ItemGroup>
