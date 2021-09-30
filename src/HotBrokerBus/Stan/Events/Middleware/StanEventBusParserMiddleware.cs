@@ -11,6 +11,8 @@ namespace HotBrokerBus.Stan.Events
     {
         public async Task Invoke(BusMiddlewareExecutionDelegate next, IEventExecutionContext context)
         {
+            using var serviceScope = context.ServiceProvider.CreateScope();
+        
             var @event = (IEvent) JsonConvert.DeserializeObject(Encoding.UTF8.GetString(context.EventData), context.EventType);
 
             if (@event == null) return;

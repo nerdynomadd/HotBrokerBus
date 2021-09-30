@@ -11,6 +11,8 @@ namespace HotBrokerBus.Stan.Commands
     {
         public async Task Invoke(BusMiddlewareExecutionDelegate next, ICommandExecutionContext context)
         {
+            using var serviceScope = context.ServiceProvider.CreateScope();
+
             ICommand command = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(context.CommandData), context.CommandType) as ICommand;
 
             if (command == null) return;
