@@ -18,7 +18,7 @@ namespace HotBrokerBus.Stan.Commands
 
             if (command == null) return;
             
-            var commandHandler = (ICommandHandler) context.ServiceProvider.GetService(context.CommandHandlerType);
+            var commandHandler = (ICommandHandler) serviceScope.ServiceProvider.GetService(context.CommandHandlerType);
 
             if (commandHandler == null) return;
 

@@ -86,9 +86,7 @@ namespace HotBrokerBus.Stan.Commands
                 {
                     using var scope = _serviceProvider.CreateScope();
                     
-                    var serviceProvider = _serviceProvider.GetService<IServiceProvider>();
-
-                    var middlewareStorage = _serviceProvider.GetService<IStanCommandBusMiddlewareStorage>();
+                    var middlewareStorage = scope.ServiceProvider.GetService<IStanCommandBusMiddlewareStorage>();
 
                     if (middlewareStorage == null) return;
                         
@@ -104,7 +102,7 @@ namespace HotBrokerBus.Stan.Commands
                         typeof(TH),
                         null,
                         args,
-                        serviceProvider);
+                        scope.ServiceProvider);
                         
                     await middlewareComponent.Process(middlewareExecutionContext);
                 }));

@@ -134,10 +134,8 @@ namespace HotBrokerBus.Stan.Events
                 async (sender, args) =>
                 {
                     using var scope = _serviceProvider.CreateScope();
-
-                    var serviceProvider = _serviceProvider.GetService<IServiceProvider>();
                     
-                    var middlewareStorage = _serviceProvider.GetService<IStanEventBusMiddlewareStorage>();
+                    var middlewareStorage = scope.ServiceProvider.GetService<IStanEventBusMiddlewareStorage>();
                         
                     var middlewareComponent = middlewareStorage?.GetMiddlewares()?.First?.Value;
 
@@ -151,7 +149,7 @@ namespace HotBrokerBus.Stan.Events
                         typeof(TH),
                         null,
                         args,
-                        serviceProvider);
+                        scope.ServiceProvider);
 
                     await middlewareComponent.Process(middlewareExecutionContext);
                 }));

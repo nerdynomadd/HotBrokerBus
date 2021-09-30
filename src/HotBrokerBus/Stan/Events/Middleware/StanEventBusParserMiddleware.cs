@@ -18,7 +18,7 @@ namespace HotBrokerBus.Stan.Events
 
             if (@event == null) return;
 
-            var eventHandler = (IEventHandler) context.ServiceProvider.GetService(context.EventHandlerType);
+            var eventHandler = (IEventHandler) serviceScope.ServiceProvider.GetService(context.EventHandlerType);
 
             if (eventHandler == null) return;
 

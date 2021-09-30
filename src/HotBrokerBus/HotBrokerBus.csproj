@@ -13,7 +13,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <Description>HotBrokerBus is an extension of Message Broker clients built to provide a fully Oriented Object events or commands managment</Description>
-    <Version>1.2.8</Version>
+    <Version>1.2.9</Version>
     <PackageId>HotBrokerBus</PackageId>        
     <PackageTags>Nats Stan Nats-streaming Broker Bus Event Command RPC</PackageTags>
     <RootNamespace>HotBrokerBus</RootNamespace>
