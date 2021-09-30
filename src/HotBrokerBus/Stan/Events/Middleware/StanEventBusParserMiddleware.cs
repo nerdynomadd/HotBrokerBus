@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HotBrokerBus.Abstractions.Events;
 using HotBrokerBus.Abstractions.Stan.Events;
 using HotBrokerBus.Middleware;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace HotBrokerBus.Stan.Events

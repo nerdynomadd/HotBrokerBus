@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HotBrokerBus.Abstractions.Commands;
 using HotBrokerBus.Abstractions.Stan.Commands;
 using HotBrokerBus.Middleware;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace HotBrokerBus.Stan.Commands
