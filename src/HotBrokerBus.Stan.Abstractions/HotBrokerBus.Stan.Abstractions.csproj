@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <Version>1.0.0</Version>
+        <OutputType>Library</OutputType>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <PackageOutputPath>./../../output/HotBrokerBus.Stan.Abstractions</PackageOutputPath>
+        <PackageProjectUrl>https://github.com/Kakktuss/HotBrokerBus/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Kakktuss/HotBrokerBus/</RepositoryUrl>
+
+        <RepositoryType>git</RepositoryType>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <Description>HotBrokerBus.Stan.Abstractions are the Stan-related broker abstractions functionalities of the HotBrokerBus project that aims to extend Message Broker clients with a fully Oriented Object events or commands managment</Description>
+        <PackageId>HotBrokerBus.Stan.Abstractions</PackageId>
+        <PackageTags>Broker Bus Event Command RPC</PackageTags>
+        <RootNamespace>HotBrokerBus.Stan.Abstractions</RootNamespace>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="HotBrokerBus.Core.Abstractions" Version="1.0.0" />
+      <PackageReference Include="STAN.Client" Version="0.3.0" />
+    </ItemGroup>
+
+</Project>
