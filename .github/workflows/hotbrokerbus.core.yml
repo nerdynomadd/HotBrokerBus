@@ -1,4 +1,4 @@
-name: Publish HotBrokerBus.Stan.Abstractions to nuget
+name: Publish HotBrokerBus.Core to nuget
 on:
   push:
     branches:
