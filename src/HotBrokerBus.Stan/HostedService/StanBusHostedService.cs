@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using HotBrokerBus.Abstractions.Stan;
 using HotBrokerBus.Abstractions.Stan.Commands;
 using HotBrokerBus.Abstractions.Stan.Events;
 using HotBrokerBus.Stan.Commands;
@@ -8,6 +9,7 @@ using HotBrokerBus.Stan.Events;
 using HotBrokerBus.Stan.Injection.Options.Command;
 using HotBrokerBus.Stan.Injection.Options.Event;
 using HotBrokerBus.Stan.Injection.Options.Modules;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NATS.Client;
@@ -34,7 +36,7 @@ namespace HotBrokerBus.Stan.HostedService
             _logger = logger;
         }
         
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             if (_stanModulesOptions.HostedServiceOptions.Active)
             {
@@ -50,22 +52,31 @@ namespace HotBrokerBus.Stan.HostedService
                     StartBuses();
                 } else
                 {
+                    
+                    var stanPersistentConnection = _serviceProvider.GetService<IStanBusPersistentConnection>();
+                    
                     try
                     {
                         StartBuses();
                     }
                     catch (Exception exception) when (exception is NATSConnectionException || exception is StanConnectionException)
                     {
-                        _logger.LogError($"An error happened while trying to connect to a NATS cluster: {exception}");
+                        if (stanPersistentConnection is not null)
+                        {
+                            // stanPersistentConnection?.SetupReconnect();
+                        }
+                         
+                        
+                        _logger.LogError(exception, "An error happened while trying to connect to a NATS cluster");
                     }
                     catch (Exception exception)
                     {
-                        _logger.LogError($"An error happened while trying to start Stan buses: {exception}");
+                        _logger.LogError(exception, "An error happened while trying to start Stan buses");
                     }
+                    
+                    await stanPersistentConnection?.SetupReconnect();
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         private void _startEventBus()

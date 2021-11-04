@@ -29,7 +29,7 @@ namespace HotBrokerBus.Stan.Injection
         {
             serviceCollection.AddQuartz(options =>
             {
-                options.UseMicrosoftDependencyInjectionScopedJobFactory();
+                options.UseMicrosoftDependencyInjectionJobFactory();
             });
         }
 

@@ -138,7 +138,7 @@ namespace HotBrokerBus.Stan.Events
                         
                     var middlewareComponent = middlewareStorage?.GetMiddlewares()?.First?.Value;
 
-                    if (middlewareComponent == null) return;
+                    if (middlewareComponent is null) return;
 
                     var middlewareExecutionContext = new StanEventBusExecutionContext(middlewareComponent,
                         subscriptionName,

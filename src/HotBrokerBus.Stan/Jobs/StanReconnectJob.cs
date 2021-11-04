@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using HotBrokerBus.Abstractions.Stan;
 using HotBrokerBus.Abstractions.Stan.Commands;
 using HotBrokerBus.Abstractions.Stan.Events;
 using Microsoft.Extensions.Logging;
+using NATS.Client;
 using Quartz;
 using STAN.Client;
 
@@ -13,7 +15,7 @@ namespace HotBrokerBus.Stan.Jobs
         public async Task Execute(IJobExecutionContext context)
         {
             var logger = context.JobDetail.JobDataMap["logger"] as ILogger<StanReconnectJob>;
-            
+
             try
             {
                 var stanIntegrationEventBus =
@@ -25,21 +27,23 @@ namespace HotBrokerBus.Stan.Jobs
                 var stanPersistentConnection =
                     context.JobDetail.JobDataMap["stanPersistentConnection"] as IStanBusPersistentConnection;
 
-                stanIntegrationEventBus?.SetConnection(stanPersistentConnection?.CreateModel());
+                var stanConnection = stanPersistentConnection?.CreateModel();
+
+                stanIntegrationEventBus?.SetConnection(stanConnection);
 
                 stanIntegrationEventBus?.Resume();
 
-                stanIntegrationCommandBus?.SetConnection(stanPersistentConnection?.CreateModel());
+                stanIntegrationCommandBus?.SetConnection(stanConnection);
 
                 stanIntegrationCommandBus?.Resume();
 
                 await context.Scheduler.Clear();
-                
+
                 logger.LogInformation("The connection with Stan message broker was successfully resolved");
             }
-            catch (StanException e)
+            catch (Exception e) when (e is NATSConnectionException || e is StanConnectionException)
             {
-                logger.LogError("An error happened while trying to resume connection with Stan message broker", e);
+                logger.LogError(e, "An error happened while trying to resume connection with Stan message broker");
             }
         }
     }

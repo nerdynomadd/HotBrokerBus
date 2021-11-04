@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using HotBrokerBus.Abstractions;
 using HotBrokerBus.Abstractions.Commands;
 using HotBrokerBus.Abstractions.Events;
 using HotBrokerBus.Abstractions.Middleware;
-using HotBrokerBus.Abstractions.Stan.Commands.Middleware;
 using HotBrokerBus.Abstractions.Stan.Middleware;
 
 namespace HotBrokerBus.Stan.Middleware
@@ -123,7 +121,7 @@ namespace HotBrokerBus.Stan.Middleware
                     
                     var nextMiddlewareBaseInterface =
                         nextMiddlewareComponentCopy.Component.GetInterface(
-                            "HotBrokerBus.Core.Abstractions.Middleware.IBusMiddleware`1");
+                            "HotBrokerBus.Abstractions.Middleware.IBusMiddleware`1");
                     
                     if (nextMiddlewareBaseInterface == null)
                     {
@@ -138,10 +136,10 @@ namespace HotBrokerBus.Stan.Middleware
                     
                     if (computeBuildType == ComputeBuildType.Event)
                     {
-                        nextMiddlewareInternalDelegate = (InternalEventMiddlewareExecutionDelegate) nextMiddlewareMethod?.CreateDelegate(typeof(InternalEventMiddlewareExecutionDelegate), nextMiddleware);
+                        nextMiddlewareInternalDelegate = (InternalStanEventMiddlewareExecutionDelegate) nextMiddlewareMethod?.CreateDelegate(typeof(InternalStanEventMiddlewareExecutionDelegate), nextMiddleware);
                     } else
                     {
-                        nextMiddlewareInternalDelegate = (InternalCommandMiddlewareExecutionDelegate) nextMiddlewareMethod?.CreateDelegate(typeof(InternalCommandMiddlewareExecutionDelegate), nextMiddleware);
+                        nextMiddlewareInternalDelegate = (InternalStanCommandMiddlewareExecutionDelegate) nextMiddlewareMethod?.CreateDelegate(typeof(InternalStanCommandMiddlewareExecutionDelegate), nextMiddleware);
                     }
                     
                     nextBusMiddlewareDelegate = async ctx =>
@@ -172,7 +170,7 @@ namespace HotBrokerBus.Stan.Middleware
 
                 var processMiddlewareBaseInterface =
                     processMiddlewareComponentCopy.Component.GetInterface(
-                        "HotBrokerBus.Core.Abstractions.Middleware.IBusMiddleware`1");
+                        "HotBrokerBus.Abstractions.Middleware.IBusMiddleware`1");
 
                 if (processMiddlewareBaseInterface == null)
                 {
@@ -188,13 +186,13 @@ namespace HotBrokerBus.Stan.Middleware
                 if (computeBuildType == ComputeBuildType.Event)
                 {
                     processMiddlewareInternalDelegate =
-                        (InternalEventMiddlewareExecutionDelegate) processMiddlewareMethod?.CreateDelegate(
-                            typeof(InternalEventMiddlewareExecutionDelegate), middleware);
+                        (InternalStanEventMiddlewareExecutionDelegate) processMiddlewareMethod?.CreateDelegate(
+                            typeof(InternalStanEventMiddlewareExecutionDelegate), middleware);
                 } else
                 {
                     processMiddlewareInternalDelegate =
-                        (InternalCommandMiddlewareExecutionDelegate) processMiddlewareMethod?.CreateDelegate(
-                            typeof(InternalCommandMiddlewareExecutionDelegate), middleware);
+                        (InternalStanCommandMiddlewareExecutionDelegate) processMiddlewareMethod?.CreateDelegate(
+                            typeof(InternalStanCommandMiddlewareExecutionDelegate), middleware);
                 }
                 
                 middlewareComponent.Value.Process = async ctx =>
