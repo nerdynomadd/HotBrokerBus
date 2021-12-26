@@ -90,7 +90,7 @@ namespace HotBrokerBus.Stan.Commands
 
                     if (middlewareComponent == null) return;
                         
-                    var middlewareExecutionContext = new StanCommandBusBusExecutionContext(middlewareComponent,
+                    var middlewareExecutionContext = new StanCommandBusExecutionContext(middlewareComponent,
                         subscriptionName,
                         args.Message.Data,
                         typeof(T),

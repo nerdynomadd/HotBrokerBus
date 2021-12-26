@@ -1,13 +1,14 @@
 ﻿using System;
 using HotBrokerBus.Abstractions.Commands;
 using HotBrokerBus.Abstractions.Middleware;
+using HotBrokerBus.Abstractions.Stan.Commands;
 using NATS.Client;
 
 namespace HotBrokerBus.Stan.Commands
 {
-    public class StanCommandBusBusExecutionContext : ICommandBusExecutionContext
+    public class StanCommandBusExecutionContext : IStanCommandBusExecutionContext
     {
-        public StanCommandBusBusExecutionContext(IBusMiddlewareComponent middlewareComponent,
+        public StanCommandBusExecutionContext(IBusMiddlewareComponent middlewareComponent,
             string commandTopic,
             byte[] commandData,
             Type commandType,
@@ -50,7 +51,7 @@ namespace HotBrokerBus.Stan.Commands
         
         public ICommandHandler CommandHandler { get; set; }
         
-        public MsgHandlerEventArgs BusArguments { get; }
+        public MsgHandlerEventArgs BusArguments { get; set; }
         
         public IServiceProvider ServiceProvider { get; }
     }

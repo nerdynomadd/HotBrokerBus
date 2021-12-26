@@ -25,10 +25,11 @@ namespace HotBrokerBus.Stan.Commands.Middleware
 
                 var commandResultJson = JsonConvert.SerializeObject(commandResult);
 
-                var replyMessage = new Msg();
-
-                replyMessage.Subject = context.BusArguments.Message.Reply;
-                replyMessage.Data = Encoding.UTF8.GetBytes(commandResultJson);
+                var replyMessage = new Msg
+                {
+                    Subject = context.BusArguments.Message.Reply,
+                    Data = Encoding.UTF8.GetBytes(commandResultJson)
+                };
 
                 context.BusArguments.Message.Respond(Encoding.UTF8.GetBytes(commandResultJson));
                 
